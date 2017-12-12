@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>变量的解构赋值</title>
+</head>
+<body>
+     <script type="text/javascript">
+ 	 /*
+        基本概念：本质上是一种—匹配模式,只要等号两边的模式相同，
+                  那么左边的变量就可以被赋予相应的值。
+
+        解构赋值分类：
+                     1.数组的解构赋值。
+                     2.对象的解构赋值。
+                     3.基本类型的解构赋值。                    
+ 	 */
+     /*
+      	let a=1,
+     	let b=2;
+     	let c=3;
+        //上面分别给a、b、c赋值就可以用下面这种解构赋值的方法
+     	let [a,b,c]=[1,2,3];
+     	console.log(a,b,c);//1 2 3
+     */
+    
+ /*--------------------------------1数组的解构赋值-------------------------------------*/
+      
+	 /*
+	    例子1.1
+	        let [a,[b,[c]]]=[1,[2,[3]]];
+	        console.log(a,b,c);//1 2 3
+	        //说明只要左右结构相同（即匹配）那么左边的变量就可以被赋值
+	  */
+     /*
+        例子1.2
+	        let [,,c]=[1,2,3];
+	        console.log(c);// 3
+	        //相当于前两个没有声明，只声明了c
+     */
+     /*
+        例子1.3
+	        let [a]=[];
+	        console.log(a);// undefined
+	        //相当于声明一个变量a，没有赋值（解构失败）
+
+     */
+     /*
+        例子1.3
+	        let [a=1]=[];
+	        console.log(a);// 1
+	        //在解构赋值的时候允许指定默认值
+
+     */
+ /*--------------------------------2对象的解构赋值-------------------------------------*/   
+    /*
+       例子2.1
+	        let {a,b} ={b:"bbbb",a:"aaaa"};
+	        console.log(a,b);//aaaa bbbb
+	        //等号左边的两个变量的次序，与等号右边两个同名属性的次序不一致，但是对取值完全没有
+	        //影响。。而数组的声明和值的位置必须要一一对应
+    */
+    /*
+       例子2.2
+	         let {a:b} ={a:"bbbbbb"};
+		     console.log(b);//bbbbbb
+		     console.log(a);//a is not defined
+	 
+		     //对象的解构赋值的内部机制，是先找到同名属性a，
+		     //然后再将“bbbbbb”赋给对应的变量b。
+		     // 真正被赋值的是后者b，而a不是前者。
+
+    */
+
+   /*--------------------------------3基本类型的解构赋值---------------------------------*/ 
+    /*
+       3.1字符串的解构赋值
+           const [a, b, c, d, e] = 'hello';
+		a // "h"
+		b // "e"
+		c // "l"
+		d // "l"
+		e // "o"
+
+	   console.log(typeof a)//string
+	   //字符串被转换成了一个类似数组的对象,类似数组的对象都有一个length属性
+	   //因此还可以对这个属性解构赋值。
+	   let {length:len}="hello";
+	   console.log(len)//5
+    */
+    /*
+       3.2数值和布尔值的解构赋值
+
+        let {toString: nts} = 123;
+        let {toString: bts} = true;
+	    console.log(nts === Number.prototype.toString);// true
+		console.log(bts === Boolean.prototype.toString);// true
+      //解构赋值的规则是，只要等号右边的值不是对象或数组，就先将其转为对象。
+      //上面代码中，数值和布尔值的包装对象都有toString属性，因此变量nts和bts都能取到值。
+    */
+    /*  
+       3.4由于undefined和null无法转为对象，所以对它们进行解构赋值，都会报错。
+       let { a: x } = undefined; // TypeError
+       let { b: y } = null; // TypeError
+    */
+
+
+
+
+
+
+
+
+ /*--------------------------------变量解构赋值的用途---------------------------------*/ 
+/*
+   用途1交换变量的值：
+      let a=0;
+	  let b=1;
+	  [a,b]=[b,a]
+	  console.log(a);//1
+	  console.log(b);//0
+*/
+/*
+   用途2从函数返回多个值：
+     //2.1放回一个数组
+      function oreturn(){
+    	    return [1,2,3];
+	   }
+	    let [a, b, c] = oreturn();
+	    console.log(a);//1
+	    console.log(b);//2
+	    console.log(c);//3
+	    console.log([a,b,c]);//Array(3) 返回一个数组
+    //函数只能返回一个值，如果要返回多个值，只能将它们放在数组或对象里返回
+    //2.2返回一个对象
+    function oreturn(){
+    	    return {student:{
+    	    	              name:"xiaoming",
+    	    	              age:18
+    	    	            }
+	                }
+       }
+	   let {student:stu}=oreturn();
+	   console.log(stu);
+	  //用函数返回一个对象
+*/
+/*
+   用途3函数参数的定义：
+
+    //3.1 参数是一组有次序的值
+      function fn([a,b,c]){
+     	console.log(a,b,c);
+      }
+      fn([1,2,3]);//1 2 3
+
+    //3.2 参数是一组无次序的值
+     function fn({a,b,c}){
+     	console.log(a,b,c);
+     }
+     fn({b:"bbb",a:"aaa",c:"ccc"});//aaa bbb ccc
+*/
+/*
+   用途3提取 JSON 数据：
+        let jsonDate={
+      	   id:"9527",
+      	   name:"xiaoming",
+      	   age:18
+      }
+      let {id,name,age}=jsonDate;
+      console.log(id);//9527
+      console.log(name);//xiaoxing
+      console.log(age);//18
+*/
+    
+     </script>
+</body>
+</html>

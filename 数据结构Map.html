@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Map(字典)</title>
+</head>
+<body>
+     <div id="myDiv"></div>
+     <script type="text/javascript">
+      /* 
+       const data = {};
+       const ele = document.getElementById('myDiv');
+       data[ele] = 'datas';
+       console.log(data)//Object {[object HTMLDivElement]: "datas"}
+       console.log(data['[object HTMLDivElement]']);//datas
+     */
+
+      /*
+       JavaScript 的对象（Object），本质上是键值对的集合（Hash结构），
+       但是传统上只能用字符串当作键。这给它的使用带来了很大的限制。
+
+       上面代码原意是将一个DOM节点作为对象data的键，
+       但是由于对象只接受字符串作为键名，
+       所以element被自动转为字符串[object HTMLDivElement]。
+      */
+      /*
+       为了解决向上面这个问题，ES6 提供了 Map 数据结构。
+       它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，
+       各种类型的值（包括对象）都可以当作键。也就是说，
+       Object 结构提供了“字符串—值”的对应，
+       Map    结构提供了“值—值”的对应，
+       是一种更完善的 Hash 结构实现。
+       如果你需要“键值对”的数据结构，Map 比 Object 更合适。
+      */
+
+/*-----------------------------1.创建Map----------------------------------*/
+/*
+   Map是一个构造函数，用new方法创建,传入参数是一个二维数组[[key,value],[key2,value2]....]
+           const map=new Map([
+     	                ["a",1],
+     	                ["b",2],
+     	                ["c",3]
+     	              ]);
+           console.log(map);//Map(3) {"a" => 1, "b" => 2, "c" => 3}
+
+*/
+
+/*------------------------2.Map的属性---------------------------*/
+     /*
+        只有唯一的一个属性size
+
+           const map=new Map([
+ 	                ["a",1],
+ 	                ["b",2],
+ 	                ["c",3]
+ 	              ]);
+            console.log(map.size);//3
+     */
+     
+
+     </script>
+</body>
+</html>
