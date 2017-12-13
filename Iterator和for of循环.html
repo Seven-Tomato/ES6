@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Iterator（遍历器）</title>
+	<!-- 
+       Iterator（遍历器）的概念:
+       JavaScript 原有的表示“集合”的数据结构，主要是数组（Array）和对象（Object），
+       ES6 又添加了Map和Set。这样就有了四种数据集合，用户还可以组合使用它们，
+       定义自己的数据结构，比如数组的成员是Map，Map的成员是对象。
+       这样就需要一种统一的接口机制，来处理所有不同的数据结构。
+
+
+
+       遍历器（Iterator）就是这样一种机制。它是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署 Iterator 接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
+
+ 
+       遍历器（Iterator）的作用：
+       1.为各种数据结构，提供一个统一的、简便的访问接口;
+       2.使数据结构的成员能够按某种次序排列;
+       3.ES6创造了一种新的遍历命令for...of循环,有了Iterator接口就可以使用for...of循环;
+	 -->
+</head>
+<body>
+      <script type="text/javascript">
+ /*----------------------------1.自定义一个Iterator接口------------------------------*/     	/*
+            这个Iterator接口有一个next()方法
+            next()方法 1.返回当前项的value值
+                       2.属性done返回一个布尔值表示是否是最后一项（即遍历结束）
+         */
+          
+         /*
+            var arr=[1,3,5,7];
+	        function  iterator(oarr){
+	        	var index=0;
+	        	return{
+	        		  next:function(){
+	                       return index<oarr.length?
+	                              {value:oarr[index++],done:false}:
+	                              {value:undefined,done:true};
+	        		  }
+	        	}
+	        }       
+	       var it=iterator(arr);
+	       console.log(it.next());//Object {value: 1, done: false}
+	       console.log(it.next());//Object {value: 3, done: false}
+	       console.log(it.next());//Object {value: 5, done: false}
+	       console.log(it.next());//Object {value: 7, done: false}
+	       console.log(it.next());//Object {value: undefined, done: true}
+            
+
+
+            上面代码自定义了一个iterator函数，它是一个遍历器生成函数，
+            作用就是返回一个遍历器对象。
+            对数组arr执行这个函数，就会返回该数组的遍历器对象（即指针对象）it。
+            指针对象it的next方法，用来移动指针。
+            开始时，指针指向数组的开始位置。
+            然后，每次调用next方法，指针就会指向数组的下一个成员。
+            第一次调用，value指向1,状态done为false;
+            第二次调用，value指向3,状态done为false;
+            第三次调用，value指向5,状态done为false;
+            第四次调用，value指向7,状态done为false;
+            第五次调用，value指向undefined,状态done为true(表示遍历完成);
+         */
+
+         /*
+            Iterator 的遍历过程是这样的。
+
+            （1）创建一个指针对象，指向当前数据结构的起始位置。
+                  也就是说，遍历器对象本质上，就是一个指针对象。
+
+            （2）第一次调用指针对象的next方法，可以将指针指向数据结构的第一个成员。
+
+            （3）第二次调用指针对象的next方法，指针就指向数据结构的第二个成员。
+
+            （4）不断调用指针对象的next方法，直到它指向数据结构的结束位置。
+         */
+    
+
+
+ /*------------2.ES6规定有Symbol.iterator属性的数据结构都具有Iterator接口------------*/ 
+ /*
+                   原生部署了Symbol.iterator属性的数据结构有：
+							Array
+							Map
+							Set
+							String
+							TypedArray
+							函数的 arguments 对象
+							NodeList 对象
+
+
+			    const arr=[1,2,3];
+                const map=new Map([["a",1],["b",2]]);
+                const set=new Set(["a",1]);
+              
+
+                console.log(arr[Symbol.iterator]());
+                console.log(map[Symbol.iterator]());
+                console.log(set[Symbol.iterator]());
+
+                console.log(arr[Symbol.iterator]().next());
+                console.log(map[Symbol.iterator]().next());
+                console.log(set[Symbol.iterator]().next());	
+
+            //tips:
+                   Symbol.iterator属性本身是一个函数，
+                   就是当前数据结构默认的遍历器生成函数。 
+                   执行这个函数，就会返回一个遍历器。
+                   至于属性名Symbol.iterator，它是一个表达式，
+                   返回Symbol对象的iterator属性，
+                   这是一个预定义好的、类型为 Symbol 的特殊值，
+                   所以要放在方括号内（Symbol）。      	
+ */
+
+
+ /*-----------------3.具有Iterator接口的数据结构可以进行的操作-----------------*/     
+       /*
+         3.1解构赋值：
+
+              const set=new Set(["a",1]);
+              let [x,y]=set;
+              console.log(x , y);//a 1
+       */         
+       /*
+         3.2扩展运算符（...）：
+
+             let str="tomato";
+		     let arrstr=[...str];
+		     console.log(arrstr);//(6) ["t", "o", "m", "a", "t", "o"]
+		     //...的作用就是将数据结构展开
+       */  
+
+
+/*-------------4.具有Iterator接口的数据结构可以使用for of循环--------------------*/  
+// ES6 借鉴 C++、Java、C#和Python语言，
+//引入了for...of循环，作为遍历所有数据结构的统一的方法。
+			/*
+			  例4.1：
+                    let arr=[1,3,5,7,11];
+				    for (let i of arr){
+	                 console.log(i);//1 3 5 7 11
+				    }   
+				   //i就是数组中的每一项          
+			*/
+			/*
+			  例4.2：
+			       const map=new Map([["a",1],["b",2]]);
+				    for (let [x,y] of map){
+	                 console.log(x,y);//a 1 b 2
+				    }   
+                         
+			*/
+			    
+				   
+      </script>
+</body>
+</html>
