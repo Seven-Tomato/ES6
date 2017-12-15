@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ES6-Class类的基本语法</title>
+</head>
+<body>
+      <script type="text/javascript">
+    /*JavaScript 语言中，生成实例对象的传统方法是通过构造函数。下面是一个例子。
+
+       function Person(name,age){
+       	    this.name=name;
+       	    this.age=age;
+       }
+       Person.prototype.sayName=function(){
+       	      console.log(this.name+' '+this.age);
+       }
+       var person1=new Person("tomato",18);
+
+	    上面这种写法跟传统的面向对象语言（比如C++和Java）差异很大，
+	    很容易让新学习这门语言的程序员感到困惑。
+
+	    ES6 提供了更接近传统语言的写法，引入了 Class（类）这个概念，作为对象的模板。通过class关键字，可以定义类。
+    */
+
+     
+     /*
+       ES6 的class可以看作只是一个语法糖，它的绝大部分功能，ES5 都可以做到，
+       新的class写法只是让对象原型的写法更加清晰、更像面向对象编程的语法而已。
+       上面的代码用 ES6 的class改写，就是下面这样。
+
+     */
+          
+    
+/*----------------------------1.自定义一个class(类)------------------------------*/   
+		/*
+			class Person {
+				  constructor(name, age) {
+				    this.name = name;
+				    this.age = age;
+				  }
+
+				  sayName() {
+				      console.log(this.name+' '+this.age);
+				  }
+			}
+
+           var person1=new Person("tomato",18);
+
+
+           person1.constructor//指向构造函数
+           console.log(person1.constructor)//   class Person {
+													  constructor(name, age) {
+													    this.name = name;
+													    this.age = age;
+													  }
+
+													  sayName() {
+													      console.log(this.name+' '+this.age);
+													  }
+												}
+
+           console.log(typeof Person)//function
+           console.log(Person === Person.prototype.constructor)//true
+           //上面代码表明，类的数据类型就是函数，类本身就指向构造函数。
+           // 使用的时候，也是直接对类使用new命令，跟构造函数的用法完全一致。
+          */    
+
+
+
+ 	
+/*
+
+			上面代码定义了一个“类”，可以看到里面有一个constructor方法，
+			这就是构造方法，而this关键字则代表实例对象。也就是说，
+			ES5 的构造函数Person，对应 ES6 的Person类的构造方法。
+			Person类除了构造方法，还定义了一个sayName方法。
+			注意，定义“类”的方法的时候，
+			1.前面不需要加上function这个关键字，直接把函数定义放进去了就可以了。
+			2.另外，方法之间不需要逗号分隔，加了会报错。
+
+*/
+/*----------------------------2.关于原型prototype------------------------------*/  
+		/*
+		构造函数的prototype属性,在ES6的“类”上面继续存在。
+		事实上，类的所有方法都定义在类的prototype属性上面。
+
+		class Person {
+					  constructor() {
+					    // ...
+					  }
+
+					  toString() {
+					    // ...
+					  }
+
+					  toValue() {
+					    // ...
+					  }
+				    }
+
+		// 等同于
+
+		Person.prototype = {
+			  constructor() {},
+			  toString() {},
+			  toValue() {},
+		};
+
+		*/
+        
+        /*
+          在类的实例上面调用方法，其实就是调用原型上的方法。 
+        class Perosn {}
+		let person1 = new Perosn();
+		console.log(person1.constructor === Perosn.prototype.constructor);//true
+        */
+/*--------------------3.类上所有定义的方法都是不能枚举的和ES5不同--------------------*/  
+/*
+  Object.keys() ES5方法：取得原型对象上所有可枚举的属性和方法 返回一个数组
+  Object.getOwnPropertyNames() 取得原型对象上所有属性和方法（不论是否枚举）返回一个数组
+  说明：constructor属性是不可枚举的；
+
+   //3.1在ES6class中
+   class Person {
+				  constructor(name, age) {
+				    this.name = name;
+				    this.age = age;
+				  }
+
+				  sayName() {
+				      console.log(this.name+' '+this.age);
+				  }
+			}
+       
+       console.log(Object.keys(Person.prototype));//[]
+       console.log(Object.getOwnPropertyNames(Person.prototype));
+                                         //["constructor", "sayName"]
+  //Object.keys方法返回了一个空数组，说明ES6的class内部定义的方法和属性不可枚举      
+
+
+   //3.2在ES5中
+
+	   function Person(name,age){
+	       	    this.name=name;
+	       	    this.age=age;
+	       }
+       Person.prototype.sayName=function(){
+       	      console.log(this.name+' '+this.age);
+       }
+       var person1=new Person("tomato",18);
+       console.log(Object.keys(Person.prototype));//["sayName"]
+       console.log(Object.getOwnPropertyNames(Person.prototype));
+                                  // ["constructor", "sayName"]
+  //Object.keys方法返回了一个["sayName"]，说明ES5的构造函数原型对象上的方法和属性
+    是可以被枚举的
+*/
+      
+/*------------------4.constructor()方法是类的默认方法--------------*/
+/*
+    constructor方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法。
+    一个类必须有constructor方法，如果没有显式定义，一个空的constructor方法会被默认添加。
+*/
+/*
+         class A{}
+         let aa=new A();//实例化A  aa内部的__proto__会指向A的原型对象
+         console.log(aa.__proto__)//Object {constructor: function}
+
+         上面代码中，定义了一个空的类A，
+         JavaScript 引擎会自动为它添加一个空的constructor方法。
+*/
+
+         
+      </script>
+</body>
+</html>
