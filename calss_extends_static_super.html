@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>class继承extends static super</title>
+</head>
+<body>
+    <script type="text/javascript">
+    	 class Father {
+                constructor(name,age,job){
+                     this.name=name;
+                     this.age=age;
+                     this.job=job;
+                }
+               
+                saymsg(){
+                     console.log(this.name+this.age+this.job);
+                }
+
+                saybye(){
+                	console.log("bye");
+                }
+
+                static sayhello(){//静态方法
+                	console.log("sayhello is father's static function");
+                }
+    	 }
+/*------------------------------------1.extends-----------------------------------*/ 
+
+          class Children extends Father {
+               constructor(name,age,job){
+                 super(name,age,job);
+               }
+    	 }
+/*
+  上面代码定义了一个Children类，该类通过extends关键字，继承了Father类的所有属性和方法。
+  父类的静态方法，也会被子类继承。
+  子类必须在constructor方法中调用super方法，否则新建实例时会报错。这是因为子类没有自己的this对象，而是继承父类的this对象，然后对其进行加工。如果不调用super方法，子类就得不到this对象。
+*/   	
+    	
+       
+/*------------------------------------2.static关键字-------------------------------*/
+/* 类相当于实例的原型，所有在类中定义的方法，都会被实例继承。
+   如果在一个方法前，加上`static`关键字，
+   就表示该方法不会被实例继承，
+   而是直接通过类来调用，这就称为“静态方法”。
+   
+   Father.sayhello();//sayhello is father's static function
+   Children.sayhello()//sayhello is father's static function
+   //下面是实例调用静态方法所以报错
+   let person1=new Father("tomato",18,"no_job");
+   person1.saymsg();//tomato18no_job
+   person1.sayhello();//person1.sayhello is not a function
+
+ */
+ /*-----------------------3.super关键字------------------------------------------*/   
+ /*
+            super作为函数调用---{代表父类的构造函数}
+                                
+            super作为对象时---{1.在普通方法中-指向父类的原型对象}
+                              {2.在静态方法中-指向父类，而不是父类的原型对象。}        
+ */     
+/*
+   3.1super作为函数调用时，代表父类的构造函数。
+   作为函数时，super()只能用在子类的构造函数之中，用在其他地方就会报错。
+   注意，super虽然代表了父类A的构造函数，但是返回的是子类B的实例，
+   即super内部的this指的是B，因此super()在这里相当于
+   A.prototype.constructor.call(this)。
+
+*/
+/*
+			class A {
+				 constructor() {
+			         console.log(new.target.name);
+			  }
+			}
+
+			class B extends A {
+			        constructor() {
+			        super();
+			        console.log(new.target.name);
+			  }
+			}
+		   
+		    new B();//B
+		            //B
+*/
+/*
+上面代码中，new.target指向当前正在执行的函数。可以看到，在super()执行时，它指向的是子类B的构造函数，而不是父类A的构造函数。
+也就是说，super()内部的this指向的是B。
+*/
+
+/* 
+    3.2super作为对象时，在普通方法中，指向父类的原型对象；在静态方法中，指向父类。
+*/
+/*
+    3.2.1super作为对象时，在普通方法中，指向父类的原型对象；
+
+				   class A {
+					  p() {
+					    return 2;
+					  }
+					}
+
+					class B extends A {
+					  constructor() {
+					    super(); 
+					  }
+					  saysuper_P(){
+					       console.log(super.p()); // 2
+					  }
+					}
+
+					let b = new B();
+					b.saysuper_P();
+
+	//子类B在普通方法 saysuper_P()当中的super.p()就是将super当作一个对象使用。
+	//这时，指向A.prototype，所以super.p()就相当于A.prototype.p()。
+
+	//注意，由于super指向父类的原型对象，所以下面定义在父类实例上的方法或属性num，
+	//是无法通过super调用的。
+	//下面代码num是父类A实例的属性，super.num就引用不到它。
+	 class A {
+					  constructor() {
+					    this.num=2;
+					  }
+					}
+                   //A.prototype.num=2;//这样在原型对象中下面b.getnum();才能访问到
+					class B extends A {
+					  constructor() {
+					    super(); 
+					  }
+					  getnum(){
+					       console.log(super.num);// undefined
+					  }
+					}
+
+					let b = new B();
+					b.getnum();
+*/
+/*
+    3.2.2super作为对象，用在静态方法之中，这时super将指向父类(从而调用父类的静态方法)，而不是父类的原型对象。
+
+     class A{
+      	 say_msg(){
+      	 	console.log("我是A类原型对象中的say_msg方法");
+      	 }
+         static say_msg(){
+      	 	console.log("我是A类静态say_msg方法");
+      	 }
+      }
+     
+     class B extends A {
+              constructor(){
+              	super();
+              }
+
+         children_say_msg(){
+      	    console.log(super.say_msg());
+      	 }
+         static children_say_msg(){
+      	 	console.log(super.say_msg());
+      	 }
+     }
+     B.children_say_msg();
+     let aa=new B();//实例对象不能调用静态方法
+     aa.children_say_msg();
+*/                  
+
+     
+     /*
+      子类B调用子类B中的静态方法children_say_msg();打印出
+      “我是A类静态say_msg方法”
+      实例aa调用子类B中的普通方法children_say_msg();打印出
+      “我是A类原型对象中的say_msg方法”
+      说明super作为对象-调用静态方法指向-父类（静态属性和方法）
+                        调用普通方法指向-父类原型对象
+     */
+
+     console.log(~~2.91234)
+    </script>
+</body>
+</html>

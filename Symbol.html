@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- 
+    ES5 的对象属性名都是字符串，这容易造成属性名的冲突。比如，你使用了一个他人提供的对象，但又想为这个对象添加新的方法（mixin 模式），新方法的名字就有可能与现有方法产生冲突。如果有一种机制，保证每个属性的名字都是独一无二的就好了，这样就从根本上防止属性名的冲突。这就是 ES6 引入Symbol的原因。
+
+
+	ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值。它是 JavaScript 语言的第七种数据类型，属于基本数据类型
+	基本数据类型：undefined、null、Boolean、String、Number、Symbol。
+	引用数据类型：Object
+	 -->
+</head>
+<body>
+<script type="text/javascript">
+/*-----------------1.Symbol属于基本数据类型---------------------*/
+ /*
+ 下上面代码中，typeof运算符的结果，表明变量a是 Symbol 数据类型，
+ (基本数据类型)而不是字符串之类的其他类型。
+             let a=Symbol();
+             console.log(typeof a)//symbol 
+
+ */
+            
+/*-------------------2.Symbol的唯一性-----------------------*/
+
+ /*          let a=Symbol();
+             let aa=Symbol();
+             console.log(a===aa);//false
+             console.log(Symbol()===Symbol());//false
+  */
+
+ /*-------3.Symbol函数前不能使用new命令，否则会报错。-------------*/       
+//Symbol是一个原始类型的值，不是对象
+/*             
+             let b=new Symbol();//报错
+*/            
+/*-------4.Symbol函数可以接受一个字符串作为参数，表示对 Symbol 实例的描述-----*/   
+
+/*       let s1 = Symbol('我是s1');
+         let s2 = Symbol('我是s2');
+
+         console.log(s1);//Symbol(我是s1)
+         console.log(s2);//Symbol(我是s2)
+
+         上面代码中，s1和s2是两个 Symbol 值。
+         如果不加参数，它们在控制台的输出都是Symbol()，不利于区分。
+         有了参数以后，就等于为它们加上了描述，输出的时候就能够分清，到底是哪一个值。
+*/
+/*-------------------------5.Symbol类型转换--------------------------------*/
+/* 
+  5.1转字符串
+
+		  console.log(Symbol("tomato").toString());//Symbol(tomato)
+		  console.log(typeof Symbol("tomato").toString());//string
+
+		  console.log(String(Symbol("tomato")));//Symbol(tomato)
+		  console.log(typeof String(Symbol("tomato")));//string
+*/
+/*
+  5.2转换成Boolean
+         console.log(!!Symbol());//true
+*/
+
+// 不能转换为Number类型 console.log(Number(Symbol()));//error
+/*------------------------6.Symbol作为属性名----------------------------- */
+/*
+由于每一个 Symbol 值都是不相等的，这意味着 Symbol 值可以作为标识符，
+用于对象的属性名，就能保证不会出现同名的属性。
+这对于一个对象由多个模块构成的情况非常有用，
+能防止某一个键被不小心改写或覆盖。
+*/
+/*
+   第一种写法：
+        let name=Symbol("tomato");
+
+        const person={};
+
+        person[name]="man";
+        console.log(person);//Object {Symbol(tomato): "man"}
+        console.log(person[name]);//man
+*/                 
+/*
+   第二种写法:
+        let name=Symbol("tomato");
+
+		let person = {
+		   [name]:'tomato'
+		};
+
+        console.log(person);//Object {Symbol(tomato): "man"}
+        console.log(person[name]);//man
+*/
+/*
+  第三种写法:
+        let name=Symbol("tomato");
+
+        let person = {};
+        Object.defineProperty(person,name, { value: 'man' });
+
+        console.log(person);//Object {Symbol(tomato): "man"}
+        console.log(person[name]);//man
+*/       
+/*---------7.在对象的内部,用 Symbol 值定义属性时，Symbol 值必须放在方括号之中----*/		
+//下面代码中，如果sayname不放在方括号中，该属性的键名就是字符串s，
+//而不是s所代表的那个 Symbol 值。 
+/*
+          let sayname = Symbol();
+          let person={
+          	 [sayname]:function(oname){
+                    console.log(oname);
+          	 }
+          }        
+          person[sayname]("tomato");//tomato
+
+  */
+</script>
+</body>
+</html>
