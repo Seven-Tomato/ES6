@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+      <script type="text/javascript">
+ /*------------------------------1.为函数的参数指定默认值--------------------*/
+    /*
+      function add(a,b){
+           a=a || 10;
+           b=b || 20;
+           console.log(a+b);
+    }*/
+    //add(10,10);//20
+    //add(0,10);//20
+    /* 
+    上面的代码,是ES5中指定函数默认参数的方法：
+    可以看出在第二次调用函数add(0,10)并传入参数时结果不是10，而是而是
+    原因是0 ||被解析成了布尔值false 所以a就为10，所以最终结果10+10;
+  */
+   /*
+     为了避免上面这种情况出现ES6 允许为函数的参数设置默认值，即直接写在参数定义的后面。
+
+       function add(a=10,b=20){         
+           console.log(a+b);
+       }
+	   add(10,10);//20
+	   add(0,10);//10
+   */  
+ /*-----------------------------2.rest参数 ------------------------------*/  
+  /*
+   ES6 引入 rest 参数（形式为...变量名），用于获取函数的多余参数，
+   这样就不需要使用arguments对象了。rest参数搭配的变量是一个数组，
+   该变量将多余的参数放入数组中。
+
+
+    function sum(){
+   	     var args=arguments;
+   	     var res=0;
+   	     for (var i = 0; i < args.length; i++) {
+   	           res+=args[i];
+   	       }
+   	     console.log(res);  
+   }
+   sum(1,2,3,4,5);
+   //上面方法是运用遍历arguments来求传入每一项的最后的总和
+   //下面对上面的方法用rest 参数改写
+
+    function sum(...arr){
+   	     var res=0;
+   	     for (var i = 0; i < arr.length; i++) {
+   	           res+=arr[i];
+   	       }
+   	     console.log(res);  
+      }
+      sum(1,2,3,4,5);
+      //注意：...arr 后面不能再跟参数但是前面可以
+      function sum(a,...arr){
+   	     var res=0;
+   	     for (var i = 0; i < arr.length; i++) {
+   	           res+=arr[i];
+   	       }
+   	     console.log(res);//15  
+   	     console.log(a); //1
+      }
+      sum(1,2,3,4,5);
+ */
+  /*-----------------------------3.箭头函数( => ) ------------------------------*/    
+  //ES6 允许使用“箭头”（=>）定义函数。
+    /*
+     var f = v => v;
+     //上面的函数就相当于
+     var f=function(v){
+	     return v;
+     }
+    //"=>" 前面为参数，后面为返回值。
+       var fn=a=>a;
+       console.log(fn("hello world"));//hello world
+    */
+	/*
+
+       3.1 箭头函数定义对个参数或没有参数用()
+           3.1.1没有参数的箭头函数
+	            var fn=()=>"a";
+			    console.log(fn());//a
+			    //上面函数就等于下面
+			    var fn=function(){return "a";}
+			    console.log(fn());//a
+		    3.1.2多个参数的箭头函数
+		        var fn=(a,b,c)=>a+b+c;
+	            console.log(fn(1,2,3));//6
+                //上面函数就等于下面
+			    var fn=function(a,b,c){return a+b+c;}
+			    console.log(fn(1,2,3));//6
+	*/
+    /* 
+      3.2 箭头函数的代码块部分不止一条语句，就要使用{}将它们括起来，并使用return语句返回。 
+
+             var fn=(a,b,c)=>{a=a+c;
+	         	              b=b+c;
+	         	              return a+b;
+	                         };
+			    
+            console.log(fn(1,2,3));//9  
+
+
+           //如果返回的是一个对象{}外面要加()，避免对象被解析为函数体
+           var fn=(a,b)=>({a,b});
+	       console.log(fn(1,2));//Object {a: 1, b: 2}
+    */         
+	        
+    /*
+       3.3 箭头函数 一般常用于回调函数        
+		    var arr=[11,3,2,10,21];
+		    var res=arr.sort(function compare(a,b){
+		            return a-b;
+		    });
+		    console.log(res);//(5) [2, 3, 10, 11, 21]
+		    //上面是运用数组的sort方法排序里面有一个比较函数，从而排序。
+		    //上面的代码sort()方法里的比较函数可以写成箭头函数的形式
+            var arr=[11,3,2,10,21];
+		    var res=arr.sort((a,b)=>a-b);
+		    console.log(res);//(5) [2, 3, 10, 11, 21]
+
+    */       
+
+/*-------------------4.使用箭头函数要注意的几点----------------------*/    
+/*
+     （4.1）箭头函数体内没有自己的this对象，所以在使用时，
+          其内部this就是定义时所在环境的对象，而不是使用时所在环境的对象。
+
+           function fn(){
+	       	 setTimeout(function(){
+	       	 	console.log(this);
+	       	 },1000);
+
+	       	 setTimeout(()=>{
+	            console.log(this);
+	       	 },1000)
+	       }
+
+	       var obj={a:1};
+	       fn.call(obj);//Window
+	                    //Object
+
+     上面的fn函数将它定义在了obj对像上时，按照逻辑两个setTimeout方法里的
+     方法发调用后，由于闭包，this都应该指向Window.
+     可结果显示箭头函数内部的this为Object {a: 1};
+     所以它的this就是fn.call(obj);定以后obj的this。
+    //由于箭头函数内没有this所以不能用 call()、apply()、bind()方法去改变this的指向
+*/
+
+
+ /* 
+     （4.2）箭头函数体内没arguments对象，如果要用，可以用Rest参数代替
+              var fn=()=>arguments;
+              console.log(fn(1,2,4,3));//arguments is not defined
+              //通过Rest参数
+              var fn=(...arr)=>arr
+              console.log(fn(1,2,4,3));//(4) [1, 2, 4, 3]
+
+*/
+    
+ /*  
+     （4.3）箭头函数不能当做构造函数，即不能使用new命令，否则会报错
+
+             const Fn=(a,b)=>a+b;
+             let ff=new Fn(1,2);//fn is not a constructor
+     
+ */ 
+/*  
+     （4.4）箭头函数不能用作Generator函数。
+ */ 
+
+
+
+
+
+  
+      </script> 
+</body>
+</html>

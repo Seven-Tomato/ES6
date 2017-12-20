@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+       <ul>
+         <li>1</li>
+         <li>2</li>
+         <li>3</li>
+         <li>4</li>
+       </ul>		
+      <script type="text/javascript">
+/*--------------------------1.字符串--------------------------------------------*/      
+ 
+/*       
+   1.1 模板字符串
+		      var html='<ul>'
+			      	   +'<li>1</li>'
+			      	   +'<li>2</li>'
+			      	   +'<li>3</li>'
+		             +'</ul>';
+		      console.log(html);
+*/
+      //上面是传统模板的写法，需要用加号拼接，很麻烦。
+      //ES6 引入了模板字符串解决这个问题。
+ /* 
+    模板字符串（template string）是增强版的字符串，用反引号（`）标识。
+    它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
+    大括号内部可以放入任意的 JavaScript 表达式，可以进行运算，以及引用对象属性。
+ */
+       /* let flag=true;
+        var html=`<ul>
+			      	<li class="${flag?'show':'hide'}">1</li>
+			      	<li>2</li>
+			      	<li>3</li>
+		         </ul>`
+		console.log(html);
+*/
+
+/*  
+   1.2 repeat()重复字符串方法
+
+                   let str1="aa";
+                   let str2=str1.repeat(2);
+                   console.log(str2);//aaaa
+*/
+
+/* 
+   1.3 includes()检查某个字符串是否在内返回一个布尔值
+
+				   let str="tomato";
+				   console.log( str.includes("ma"));//true
+				   console.log( str.includes("bb"));//false
+*/
+
+/*
+    1.4 startsWith()/endsWith检查某个字符串是否在开始或结尾
+
+                   let str="tomato";
+                   console.log( str.startsWith("to"));//true
+                   console.log( str.endsWith("to"));//true
+*/
+/*--------------------------2.数组的扩展--------------------------------------------*/ 
+/*
+  2.1 Array.from()将类数组对象转换成正真的数组
+     //Array.isArray(object)如果测试的对象不是数组返回 false
+     //类数组有length属性，但不具有数组的方法例如（arguments对象和dom返回的结果）   
+      
+      var olis=document.querySelectorAll("li");
+      console.log(olis.length);//4
+      console.log(Array.isArray(olis));//false   olis是一个类数组，不是正真的数组。
+      var arr=[1,2,3];
+      arr.shift();
+      console.log(arr);//(2) [2, 3]
+      // console.log( olis.shift());//olis.shift is not a function          
+      //下面通过Array.from()变成真正的数组
+      let real_olis= Array.from(olis);
+      console.log(real_olis);
+      console.log(Array.isArray(real_olis));//true
+      console.log( real_olis.shift());// <li>1</li>    
+*/    
+/*
+   2.2 Array.of()创建一个数组
+
+      var arr=Array.of(1,2,3);
+      console.log(arr);//(3) [1, 2, 3]
+*/
+/*
+  2.3find()/findIndex()返回符合条件的元素(第一个)/元素下标(第一个),付符合条件返回undefined/-1
+       let arr=[1,3,5,7];
+       var results=arr.find(function(a){
+		        return a<5;
+		    })
+	  console.log(results);//1
+
+	 let arr=[1,3,5,7];
+     var results=arr.findIndex(function(a){
+		        return a>3;
+		    })
+	  console.log(results);//2
+*/ 
+/*
+  2.4 fill() 填充替换
+   
+    var arr=[1,2,3,4];
+    arr.fill("aa",1,3);
+    console.log(arr);//(4) [1, "aa", "aa", 4]
+   //第一个参数为替换的内容，二、三分别表示替换的开始位置、结束位置。留头不留尾
+*/
+ /*-----------------------------3.对象的扩展-----------------*/ 
+ /*
+     3.1对象的简洁写法表示法
+     3.1.1
+	     let name="tomato";
+	     const person={
+	     	name:name
+	     }
+	     console.log(person);//Object {name: "tomato"}
+	     //上面person对象的变量名和外面变量相同可以简写成下面的方式
+	     let name="tomato";
+	     const person={name}
+	     console.log(person);//Object {name: "tomato"}
+     
+     3.1.2对象方法的简写
+	     const person={
+	     	sayName:function(name){
+	     		alert("hello"+" "+name);
+	     	}
+	     }
+	     //上面对象的方法可以简写成下面
+	     const person={
+	     	sayName(name){
+	     		alert("hello"+" "+name);
+	     	}
+	     }
+ */
+
+  /*
+     3.2 Object.is() 检测对象是否“长得一样，只看外表”,返回一个布尔值。
+     //NaN和任何值都不相等
+      
+      console.log( Object.is(NaN,NaN));//true
+      console.log( Object.is(-0,+0));//false
+  */ 
+
+ /*
+    3.3 Object.assign(目标对象，源对象...)用于对象合并将源对象的可枚举属性，复制到目标对象。
+        
+
+        let obj1={a:1};
+	    let obj2={a:"aaa",b:2,c:3};
+	    let obj3={a:1,b:2,c:"ccc"};
+	    let new_obj1=Object.assign(obj1,obj2,obj3);
+	    console.log(new_obj1);
+
+	    //上面代码将将源对象obj2、obj3合并到目标对象obj1中，
+	    //注意:可枚举属性名相同时
+	    //位于后面的源对象的可枚举属性会覆盖位于前面源对象的可枚举属性
+
+
+ */   
+  
+      </script>
+</body>
+</html>

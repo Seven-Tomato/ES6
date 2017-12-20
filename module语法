@@ -1,0 +1,19 @@
+a.js
+index.js
+
+项目前有两个js文件如果要在index.js里用a.js的属性或者方法怎么办？
+使用export（输出）命令、import（输入）命令
+
+a.js中用export命令将方法和属性输出
+export default function a(){}//默认导出,导出的东西可以没有名字
+export const a = 1;
+export const b = 2;
+
+
+index.js中用import命令将方法和属性接收
+import renyimingzi from './a.js';//接收默认导出可以任意命名
+import {a,b} from './a.js';//用{}花括号来接收变量名字
+
+
+上面import代码可以简写：
+import renyimingzi , {a,b} from './a.js';
